@@ -1,12 +1,10 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AI Message Detection</title>
+    <title>Spam or Not? | AI Detector</title>
 
     <style>
         * {
@@ -16,265 +14,270 @@
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #080b18;
-            color: white;
             min-height: 100vh;
-            padding: 30px 20px;
-        }
-
-        .navbar {
-            max-width: 1100px;
-            margin: auto;
+            background: #050514;
+            color: white;
+            font-family: Arial, sans-serif;
             display: flex;
-            justify-content: flex-end;
-            padding: 15px 0 35px;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .status {
-            color: #4ade80;
-            font-size: 13px;
-            background: #142b25;
-            padding: 9px 15px;
-            border-radius: 30px;
+        body::before {
+            content: "";
+            position: fixed;
+            width: 550px;
+            height: 400px;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: radial-gradient(
+                ellipse,
+                rgba(102, 45, 190, 0.25),
+                transparent 70%
+            );
+            pointer-events: none;
         }
 
-        .hero {
+        .container {
+            width: 100%;
+            max-width: 600px;
             text-align: center;
-            margin: 55px auto 35px;
-            max-width: 750px;
+            position: relative;
+            z-index: 1;
         }
 
         .badge {
             display: inline-block;
-            color: #c4b5fd;
-            background: #211b3c;
-            padding: 9px 18px;
+            padding: 7px 13px;
+            border: 1px solid #282443;
+            background: #111027;
+            color: #b5a4ff;
             border-radius: 30px;
-            font-size: 13px;
+            font-size: 11px;
             margin-bottom: 22px;
         }
 
-        h1 {
-            font-size: clamp(35px, 6vw, 55px);
-            line-height: 1.2;
-            margin-bottom: 18px;
+        .badge span {
+            color: #55e6a5;
         }
 
-        h1 span {
-            background: linear-gradient(90deg, #a78bfa, #38bdf8);
+        h1 {
+            font-size: clamp(36px, 7vw, 55px);
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(90deg, #a78bfa, #e879f9);
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
+            margin-bottom: 15px;
         }
 
         .subtitle {
-            color: #9ca3af;
-            font-size: 16px;
-            line-height: 1.7;
-        }
-
-        .main-card {
-            max-width: 750px;
-            margin: auto;
-            background: #111629;
-            border: 1px solid #29314b;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .card-title {
-            font-size: 19px;
-            margin-bottom: 10px;
-        }
-
-        .card-description {
-            color: #929bb1;
+            color: #9998b2;
             font-size: 14px;
-            margin-bottom: 20px;
+            line-height: 1.7;
+            max-width: 470px;
+            margin: 0 auto 30px;
+        }
+
+        .input-card {
+            background: rgba(13, 15, 38, 0.95);
+            border: 1px solid #292344;
+            border-radius: 18px;
+            padding: 15px;
+            box-shadow: 0 0 45px rgba(119, 69, 220, 0.13);
+            text-align: left;
         }
 
         textarea {
             width: 100%;
-            min-height: 200px;
+            min-height: 190px;
+            background: transparent;
+            border: none;
+            outline: none;
             resize: vertical;
-            background: #090e20;
-            border: 1px solid #303a58;
-            border-radius: 12px;
-            padding: 18px;
             color: white;
             font-size: 15px;
-            line-height: 1.7;
-            outline: none;
+            line-height: 1.6;
             font-family: inherit;
         }
 
-        textarea:focus {
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
-        }
-
         textarea::placeholder {
-            color: #68738c;
+            color: #77758e;
         }
 
-        .bottom-info {
+        .bottom {
             display: flex;
             justify-content: space-between;
-            color: #8993aa;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        #counter {
+            color: #77758e;
             font-size: 12px;
-            margin: 12px 0 22px;
         }
 
         button {
-            width: 100%;
-            padding: 16px;
             border: none;
-            border-radius: 11px;
-            background: linear-gradient(90deg, #7c3aed, #2563eb);
+            border-radius: 30px;
+            padding: 12px 23px;
+            background: linear-gradient(100deg, #7251c9, #a855d8);
             color: white;
-            font-size: 16px;
             font-weight: bold;
+            font-size: 13px;
             cursor: pointer;
             transition: 0.3s;
         }
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(124,58,237,0.3);
+            box-shadow: 0 0 20px #8955d9;
         }
 
         button:disabled {
-            opacity: 0.65;
-            cursor: wait;
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .result {
             margin-top: 25px;
-            padding: 22px;
-            border-radius: 13px;
+            padding: 20px;
+            border-radius: 15px;
+            background: #111027;
+            border: 1px solid #393052;
             text-align: center;
         }
 
-        .spam {
-            background: #35191f;
-            border: 1px solid #ef4444;
-        }
-
-        .ham {
-            background: #123126;
-            border: 1px solid #22c55e;
-        }
-
         .result h2 {
+            font-size: 22px;
             margin-bottom: 8px;
         }
 
         .result p {
-            color: #cbd5e1;
-            font-size: 14px;
+            color: #aaa8bf;
+            font-size: 13px;
         }
 
-        @media(max-width: 600px) {
-            .main-card {
+        .spam {
+            border-color: #9e343f;
+        }
+
+        .spam h2 {
+            color: #ff6b78;
+        }
+
+        .ham {
+            border-color: #218b67;
+        }
+
+        .ham h2 {
+            color: #5ce6a6;
+        }
+
+        @media (max-width: 480px) {
+            body {
                 padding: 20px;
             }
 
-            .hero {
-                margin-top: 30px;
+            textarea {
+                min-height: 170px;
             }
         }
     </style>
-
 </head>
 
 <body>
 
-    <nav class="navbar">
-        <div class="status">● System Online</div>
-    </nav>
+    <main class="container">
 
-    <section class="hero">
+        <div class="badge">
+            <span>●</span> Powered by AI
+        </div>
 
-        <div class="badge">✦ AI-Powered Message Security</div>
-
-        <h1>
-            Detect Spam.<br>
-            <span>Stay Protected.</span>
-        </h1>
+        <h1>Spam or not?</h1>
 
         <p class="subtitle">
-            Analyse suspicious messages using Machine Learning.
-            Identify potential spam and protect yourself from unwanted messages.
-        </p>
-
-    </section>
-
-    <div class="main-card">
-
-        <h3 class="card-title">Analyse Your Message</h3>
-
-        <p class="card-description">
-            Paste your SMS or text message below to check its classification.
+            Paste any email, SMS, or DM. Get a blunt verdict from AI —
+            no fluff, no dataset guessing, just a straight answer.
         </p>
 
         <form action="/predict" method="POST" id="spamForm">
 
-            <textarea
-                name="message"
-                id="message"
-                placeholder="Paste your message here..."
-                required>{{ message or '' }}</textarea>
+            <div class="input-card">
 
-            <div class="bottom-info">
-                <span>Supports text messages</span>
-                <span id="counter">0 characters</span>
+                <textarea
+                    id="message"
+                    name="message"
+                    maxlength="2000"
+                    placeholder="Paste any email, SMS, DM, or message here..."
+                    required
+                >{{ message or '' }}</textarea>
+
+                <div class="bottom">
+
+                    <span id="counter">0/2000</span>
+
+                    <button type="submit" id="analyzeBtn">
+                        ✨ Analyze
+                    </button>
+
+                </div>
+
             </div>
-
-            <button type="submit" id="analyzeBtn">
-                ✨ Analyse Message
-            </button>
 
         </form>
 
-        <!-- CORRECTED RESULT DISPLAY -->
-
         {% if prediction == 'spam' %}
 
-            <div class="result spam">
-                <h2>🚨 Spam Detected!</h2>
-                <p>This message has been classified as spam by the model.</p>
-            </div>
+        <div class="result spam">
+            <h2>🚨 SPAM DETECTED</h2>
+            <p>This message has been classified as spam by the ML model.</p>
+        </div>
 
         {% elif prediction == 'ham' %}
 
-            <div class="result ham">
-                <h2>✅ No Spam Detected</h2>
-                <p>This message has been classified as legitimate by the model.</p>
-            </div>
+        <div class="result ham">
+            <h2>✓ NOT SPAM</h2>
+            <p>This message has been classified as legitimate by the ML model.</p>
+        </div>
 
         {% endif %}
 
-    </div>
+    </main>
 
     <script>
-
-        const message = document.getElementById("message");
+        const messageInput = document.getElementById("message");
         const counter = document.getElementById("counter");
         const form = document.getElementById("spamForm");
         const button = document.getElementById("analyzeBtn");
 
-        message.addEventListener("input", function() {
-            counter.textContent = message.value.length + " characters";
-        });
+        function updateCounter() {
+            counter.textContent =
+                messageInput.value.length + "/2000";
+        }
 
-        counter.textContent = message.value.length + " characters";
+        messageInput.addEventListener("input", updateCounter);
 
-        form.addEventListener("submit", function() {
+        updateCounter();
+
+        form.addEventListener("submit", function(event) {
+
+            if (!messageInput.value.trim()) {
+                event.preventDefault();
+                alert("Please enter a message first!");
+                return;
+            }
+
             button.disabled = true;
-            button.textContent = "⏳ Analysing Message...";
-        });
+            button.textContent = "Analyzing...";
 
+        });
     </script>
 
 </body>
