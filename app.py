@@ -81,9 +81,6 @@ def home():
 # ==========================================
 # 4. SPAM DETECTION
 # ==========================================
-
-@app.route('/predict', methods=['POST'])
-def predict():
 @app.route('/predict', methods=['POST'])
 def predict():
 
